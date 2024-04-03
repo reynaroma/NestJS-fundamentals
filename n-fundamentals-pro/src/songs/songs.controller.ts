@@ -37,6 +37,7 @@ export class SongsController {
     } catch (e) {
       // console.log('I am in the catch block', e); // Error checking using console
       // We want to send the useful status code in the response using HttpException
+      // Exception Filters
       throw new HttpException('Forbidden', HttpStatus.INTERNAL_SERVER_ERROR, {
         cause: e,
       });
@@ -53,7 +54,7 @@ export class SongsController {
     //if you want to customize the error status code
     // instantiate the ParseIntPipe with the status code
     @Param(
-      'id',
+      'id', // Built-in ParseIntPipe to convert the ID to a number
       new ParseIntPipe({ errorHttpStatusCode: HttpStatus.NOT_ACCEPTABLE }),
     )
     id: number,
