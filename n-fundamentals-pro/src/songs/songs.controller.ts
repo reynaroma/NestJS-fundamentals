@@ -5,21 +5,34 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Inject,
   Param,
   ParseIntPipe,
   Post,
   Put,
+  Scope,
 } from '@nestjs/common';
 import { SongsService } from './songs.service';
 // Import the CreateSongDTO and use it in the create method
 import { CreateSongDTO } from './dto/create-song-dto';
+import { Connection } from 'src/common/constants/connection';
 
-@Controller('songs')
+// Define the controller and the path AT FIRST it was @Controller('songs')
+@Controller({ path: 'songs', scope: Scope.REQUEST })
 export class SongsController {
   // Inject the SongsService
   // inside of the constructor instance of the SongsService
   // We are injecting the dependency
-  constructor(private songsService: SongsService) {}
+  constructor(
+    private songsService: SongsService,
+    // Inject the OBJECT as a provider
+    @Inject('CONNECTION')
+    private connection: Connection,
+  ) {
+    console.log(
+      `This is the CONNECTION STRING ${this.connection.CONNECTION_STRING}`,
+    );
+  }
   // Create a new song ENDPOINT
   @Post()
   create(@Body() createSongDTO: CreateSongDTO) {

@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { SongsController } from './songs.controller';
 import { SongsService } from './songs.service';
+import { connection } from 'src/common/constants/connection';
 
 // mock data and use it in the module then use useValue
 const mockSongsService = {
@@ -23,11 +24,19 @@ const mockSongsService = {
   //     useClass: SongsService,
   //   },
   // ], // option no. 2
+  // providers: [
+  //   SongsService,
+  //   {
+  //     provide: SongsService,
+  //     useValue: mockSongsService, // useValue syntax is useful for injecting constant valuees, external libraries, and configuration values
+  //   },
+  // ], for mock data
   providers: [
+    // using database
     SongsService,
     {
-      provide: SongsService,
-      useValue: mockSongsService,
+      provide: 'CONNECTION',
+      useValue: connection,
     },
   ],
 })
